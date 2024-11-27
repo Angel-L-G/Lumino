@@ -16,15 +16,21 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 import accounts.views
 import shared.views
+import users.views
 
 urlpatterns = [
     path('', shared.views.index, name='home'),
     path('admin/', admin.site.urls),
     path('login/', accounts.views.user_login, name='login'),
     path('logout/', accounts.views.user_logout, name='logout'),
-    path('signup/', accounts.views.signup, name='signup'),
-]
+    path('signup/', accounts.views.user_signup, name='signup'),
+	path('users/<str:username>/', users.views.user_detail, name='user_detail'),
+	path('user/', include('users.urls')),
+	#path('subjects/', include('subjects.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,6 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from accounts.forms import LoginForm, SignupForm
+from users.models import Profile
 # Create your views here.
 
 
@@ -19,7 +21,9 @@ def user_login(request):
         password = form.data['password']
         if user := authenticate(request, username=username, password=password):
             login(request, user)
-            return redirect(next)
+            if next:
+                return redirect(next)
+            return redirect('home')
         else:
             form = LoginForm()
             login_error = True
@@ -43,5 +47,14 @@ def user_logout(request):
     return redirect('home')
 
 
-def signup(request):
-    pass
+def user_signup(request):
+    if request.method == 'POST':
+        if (form := SignupForm(request.POST)).is_valid():
+            user = form.save()
+            profile = Profile(user=user)
+            profile.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = SignupForm()
+    return render(request, 'accounts/signup.html', dict(form=form))

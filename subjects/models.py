@@ -4,7 +4,7 @@ from django.db import models
 
 class Subject(models.Model):
     name = models.CharField(max_length=100)
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=3, unique=True)
     teacher = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='teching_subjects', on_delete=models.CASCADE
     )
