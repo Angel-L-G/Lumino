@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from accounts.forms import LoginForm, SignupForm
 from users.models import Profile
+
 # Create your views here.
 
 
@@ -51,7 +52,7 @@ def user_signup(request):
     if request.method == 'POST':
         if (form := SignupForm(request.POST)).is_valid():
             user = form.save()
-            profile = Profile(user=user)
+            profile = Profile.objects.create(user=user)
             profile.save()
             login(request, user)
             return redirect('home')

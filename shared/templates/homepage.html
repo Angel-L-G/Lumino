@@ -1,7 +1,152 @@
-{% extends "base.html" %}
-{% block title %}Homepage{% endblock title %}
-{% block content %}
-	<h2>Homepage</h2>
-	<a href="{% url 'login' %}">Login</a>
-	<a href="{% url 'signup' %}">Signup</a>
-{% endblock content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", Courier, monospace;
+      background: #1e1e1e;
+      color: #0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .console {
+      background: #000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+      max-width: 80%;
+      text-align: left;
+      overflow-y: auto;
+      width: 60%;
+      height: 30vh; /* Limitar la altura para que se desplace si hay más contenido */
+    }
+
+    .output {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      min-height: 120px;
+    }
+
+    a {
+      color: #0f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      color: #ff0;
+    }
+  </style>
+</head>
+<body>
+  <div class="console">
+    <div class="output"></div>
+  </div>
+  <script>
+    const outputElement = document.querySelector('.output');
+
+    // Array de frases con símbolos y caracteres aleatorios
+    const phrases = [
+      "Iniciando protocolo...\nCargando datos [#CampusNetwork v2.3.5]\nConexión establecida: \"Acceso autorizado\"",
+      //"Cargando sistema... OK\nAccediendo a: base de datos de estudiantes\nError 404... Corrigiendo...",
+      //"¡Bienvenido a TuCampus!\nConfigurando tu cuenta...\nConexión segura: OK",
+      "Proceso completado\nIniciando comunicaciones... Verificando acceso...\n¡Todo listo!"
+    ];
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let delay = 100;
+
+    // Función para generar un carácter aleatorio (glitch effect)
+    function randomChar() {
+      const chars = "!@#$%^&*()_+=-[]{}|;:,.<>?~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      return chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    // Función para aplicar el glitch en el texto
+    function glitchEffect(text) {
+      const glitchChance = 0.2; // 20% de posibilidad de mostrar un carácter aleatorio
+      return text
+        .split("")
+        .map(char => (Math.random() < glitchChance ? randomChar() : char))
+        .join("");
+    }
+
+    // Función para escribir o borrar las frases
+    function typeEffect() {
+      const currentPhrase = phrases[phraseIndex];
+      let displayedText;
+
+      if (phraseIndex === phrases.length - 1) {
+        // La última frase no tiene glitch, se muestra tal cual, pero queda estática
+        displayedText = currentPhrase;
+      } else {
+        // Si no es la última frase, usamos el efecto glitch
+        if (isDeleting) {
+          // Borrar letras con efecto glitch
+          charIndex--;
+          displayedText = currentPhrase.substring(0, charIndex);
+          displayedText = glitchEffect(displayedText);
+        } else {
+          // Escribir letras con efecto glitch
+          charIndex++;
+          displayedText = currentPhrase.substring(0, charIndex);
+          displayedText = glitchEffect(displayedText);
+        }
+      }
+
+      outputElement.innerHTML = displayedText;
+
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        // Pausa antes de borrar o continuar a la siguiente frase
+        if (phraseIndex === phrases.length - 1) {
+          // Si es la última frase, no borra y agrega enlaces
+          setTimeout(addLinks, 1000);  // Espera un segundo antes de mostrar los enlaces
+        } else {
+          isDeleting = true;
+          delay = 1000; // Espera entre frases antes de borrar
+        }
+      } else if (isDeleting && charIndex === 0) {
+        // Cambia a la siguiente frase
+        if (phraseIndex === phrases.length - 1) {
+          // No borra la última frase
+          return;
+        } else {
+          phraseIndex++;
+          isDeleting = false;
+          delay = 500;
+        }
+      } else {
+        // Velocidad de escritura o borrado
+        delay = isDeleting ? 75 : 150;
+      }
+
+      setTimeout(typeEffect, delay);
+    }
+
+    // Función para añadir enlaces después de la última frase
+    function addLinks() {
+      const links = `
+        <p>¿Listo para comenzar? Haz clic en los enlaces:</p>
+        <ul>
+          <li><a href="https://example.com/dashboard" target="_blank">Acceder al Dashboard</a></li>
+          <li><a href="https://example.com/help" target="_blank">Ayuda y Soporte</a></li>
+        </ul>
+      `;
+      outputElement.innerHTML += links;
+    }
+
+    // Inicia el efecto
+    typeEffect();
+  </script>
+</body>
+</html>
