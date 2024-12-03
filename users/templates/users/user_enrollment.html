@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block title %}Enroll{% endblock %}
 {% block content %}
-	<h1>Enroll in...</h1>
-	<form method="post">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<button type="submit">Enroll</button>
-	</form>
+<div class="row">
+	<div class="offset-4 col-4">
+		<h1>Enroll in...</h1>
+		{% crispy form %}
+	</div>
+</div>
 {% endblock %}
