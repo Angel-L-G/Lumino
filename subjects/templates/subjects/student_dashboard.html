@@ -1,0 +1,16 @@
+<div class="row">
+	<div class="col-9">
+		{% for lessons in lessons %}
+			<div>
+				<h3>{{ lessons.name }}</h3>
+				<p>{{ lessons.description }}</p>
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="col-3">
+		<h4>Teacher: {{ subject.teacher }}</h4>
+		<p>Lessons available: {{ subject.lessons.count }}</p>
+		<p>Mark: {{ mark|default_if_none:"You have no mark yet" }}</p>
+	</div>
+</div>

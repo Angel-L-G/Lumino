@@ -2,9 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from shared.decorators import student_required
-
-from .forms import EditProfileForm, EnrollSubjectsForm
+from .forms import EditProfileForm
 
 
 # Create your views here.
@@ -24,14 +22,3 @@ def user_edit(request):
         form.save()
         return redirect(profile.get_absolute_url())
     return render(request, 'users/user_edit.html', {'form': form})
-
-
-@login_required
-@student_required
-def enroll_subjects(request):
-    form = EnrollSubjectsForm(request.user, request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect(request.user.profile.get_absolute_url())
-
-    return render(request, 'users/user_enrollment.html', {'form': form})

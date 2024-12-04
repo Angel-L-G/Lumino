@@ -1,0 +1,23 @@
+<div class="row">
+	<div class="col-9">
+		{% for lessons in lessons %}
+			<div>
+				<h3>{{ lessons.name }}</h3>
+				<p>{{ lessons.description }}</p>
+			</div>
+		{% endfor %}
+		<a href="{% url "subjects:add-lesson" subject.code %}">Add Lesson</a>
+	</div>
+
+	<div class="col-3">
+		<p>Lessons available: {{ subject.lessons.count }}</p>
+		<a href="#">Marks</a>
+		<ol>
+			{% for student in subject.students.all %}
+				<li>
+					<a href="{{ student.profile.get_absolute_url }}">{{ student.first_name }} {{ student.last_name }}</a>
+				</li>
+			{% endfor %}
+		</ol>
+	</div>
+</div>

@@ -32,6 +32,6 @@ urlpatterns = [
     path('signup/', accounts.views.user_signup, name='signup'),
     path('users/<str:username>/', users.views.user_detail, name='user_detail'),
     path('user/', include('users.urls')),
-    # path('subjects/', include('subjects.urls')),
+    path('subjects/', include('subjects.urls')),
     path('__reload__/', include('django_browser_reload.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
