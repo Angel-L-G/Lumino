@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from django.urls import path
 
 from . import views
@@ -10,6 +9,9 @@ urlpatterns = [
     path('enroll/', views.enroll_subjects, name='enroll-subjects'),
     path('unenroll/', views.unenroll_subjects, name='unenroll-subjects'),
     path('<str:code>/', views.subject_detail, name='subject-detail'),
-    path('<str:code>/lessons/', lambda _: redirect('subjects:subject-detail')),
+    path('<str:code>/marks/', views.mark_list, name='mark-list'),
     path('<str:code>/lessons/add/', views.add_lesson, name='add-lesson'),
+    path('<str:code>/lessons/<int:pk>/', views.lesson_detail, name='lesson-detail'),
+    path('<str:code>/lessons/<int:pk>/edit/', views.edit_lesson, name='edit-lesson'),
+    path('<str:code>/lessons/<int:pk>/delete/', views.delete_lesson, name='delete-lesson'),
 ]

@@ -5,7 +5,7 @@ from subjects.models import Subject
 
 def student_required(func):
     def wrapper(request, *args, **kwargs):
-        if request.user.profile.is_teacher():
+        if request.user.is_teacher():
             return HttpResponseForbidden('Only students allowed.')
         return func(request, *args, **kwargs)
 
@@ -14,7 +14,7 @@ def student_required(func):
 
 def teacher_required(func):
     def wrapper(request, *args, **kwargs):
-        if not request.user.profile.is_teacher():
+        if not request.user.is_teacher():
             return HttpResponseForbidden('Only teachers allowed.')
         return func(request, *args, **kwargs)
 
@@ -24,8 +24,8 @@ def teacher_required(func):
 def subject_owner_required(func):
     def wrapper(request, code, *args, **kwargs):
         subject = Subject.objects.get(code=code)
-        if request.user.profile.is_teacher() and subject.teacher != request.user:
+        if request.user.is_teacher() and subject.teacher != request.user:
             return HttpResponseForbidden('Only the subject owner can perform this action.')
-        return func(request, *args, **kwargs)
+        return func(request, code, *args, **kwargs)
 
     return wrapper

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_browser_reload',
     'users.apps.UsersConfig',
     'subjects.apps.SubjectsConfig',
+    'markdownify.apps.MarkdownifyConfig',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+
 STATICFILES_DIRS = [BASE_DIR / 'node_modules']
 
 STATIC_URL = 'static/'
@@ -141,3 +143,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MARKDOWNIFY = {
+    'default': {
+        'WHITELIST_TAGS': [
+            'a',
+            'p',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+        ]
+    },
+}

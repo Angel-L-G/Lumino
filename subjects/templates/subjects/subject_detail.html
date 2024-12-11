@@ -8,8 +8,8 @@
 			</div>
 		</div>
 	
-		{% if user.profile.is_teacher %}
-			{% include 'subjects/teacher_dashboard.html' %}
+		{% if user.is_teacher %}
+			{% include 'subjects/teacher_dashboard.html' with subject=subject %}
 		{% else %}
 			{% include 'subjects/student_dashboard.html' with subject=subject mark=mark %}
 		{% endif %}

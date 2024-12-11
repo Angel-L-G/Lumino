@@ -15,7 +15,7 @@ class Subject(models.Model):
     )
 
     def get_mark(self, user):
-        if user.profile.is_teacher():
+        if user.is_teacher():
             return None
         return self.enrollments.get(student=user).mark or None
 

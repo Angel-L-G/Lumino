@@ -1,6 +1,6 @@
 from crispy_bootstrap5.bootstrap5 import FloatingField
 from crispy_forms.helper import FormHelper, Layout
-from crispy_forms.layout import Div, Field, Submit
+from crispy_forms.layout import HTML, Div, Field, Submit
 from django import forms
 
 from .models import Lesson, Subject
@@ -68,7 +68,7 @@ class UnenrollSubjectsForm(forms.Form):
         return subjects
 
 
-class LessonForm(forms.ModelForm):
+class AddLessonForm(forms.ModelForm):
     class Meta:
         model = Lesson
         fields = ['title', 'content']
@@ -84,9 +84,43 @@ class LessonForm(forms.ModelForm):
         self.helper.form_class = 'd-flex flex-column form-controll'
         self.helper.layout = Layout(
             FloatingField('title'),
-            FloatingField('content'),
+            HTML('<label>Content</label>'),
+            Field('content'),
             Div(
                 Submit('add', 'Add', css_class='btn btn-primary w-75 mt-2 mb-2'),
+                css_class='d-flex justify-content-center',
+            ),
+        )
+
+    def save(self, *args, **kwargs):
+        lesson = super().save(commit=False)
+        lesson.subject = self.subject
+        return lesson.save()
+
+
+class EditLessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ['title', 'content']
+
+    def __init__(self, subject, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.subject = subject
+
+        self.helper = FormHelper()
+        self.helper.attrs = dict(novalidate=True)
+        self.helper.form_show_labels = False
+        self.helper.form_class = 'd-flex flex-column form-controll'
+        self.helper.layout = Layout(
+            FloatingField('title'),
+            HTML('<label>Content</label>'),
+            Field('content'),
+            Div(
+                Submit('edit', 'Edit', css_class='btn btn-primary w-75 mt-2 mb-2'),
+                HTML(
+                    '<a href="{{lesson.get_absolute_url}}" class="btn btn-danger w-75 mt-2 mb-2">Cancel</a>'
+                ),
                 css_class='d-flex justify-content-center',
             ),
         )

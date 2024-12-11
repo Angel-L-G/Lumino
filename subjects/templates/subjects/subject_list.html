@@ -1,15 +1,34 @@
 {% extends "base.html" %}
 {% block title %}Subjects{% endblock title %}
 {% block content %}
-	<div class="row">
+	<div class="row mt-5">
 		<div class="col-4">
 			<h1>Subjects</h1>
-			<ul>
+			<ul class="list-group my-2">
 					{% for subject in subjects %}
-							<li>{{ subject }}</li>
-							<li>{{ subject.name }}</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							<span><strong>{{ subject }}</strong> - {{ subject.name }}</span>
+							<a href="{% url "subjects:subject-detail" subject.code %}" class="btn btn-outline-secondary"><i class="bi bi-eye"></i></a>
+						</li>
+						{% empty %}
+							<div class="alert alert-warning" role="alert">
+								Yikes! No subjects found.
+							</div>						
 					{% endfor %}
 			</ul>
 		</div>
 	</div>
+	{% if not user.is_teacher %}
+	<div class="row mt-2">
+		<div class="col d-flex">
+			<a class="btn btn-outline-success me-3" href="{% url "subjects:enroll-subjects" %}">enroll</a>
+
+			{% if user.enrolled_subjects.count == 0 %}
+				<button class="btn btn-outline-danger disabled">unenroll</button>
+			{% else %}
+				<a class="btn btn-outline-danger" href="{% url "subjects:unenroll-subjects" %}">unenroll</a>
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
 {% endblock %}

@@ -1,6 +1,14 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+
+
+def is_teacher(self):
+    return self.profile.role == Profile.Role.TEACHER
+
+
+User.add_to_class('is_teacher', is_teacher)
 
 
 class Profile(models.Model):
@@ -14,9 +22,6 @@ class Profile(models.Model):
     )
     bio = models.TextField(blank=True)
     avatar = models.ImageField(upload_to='avatars/', default='avatars/noavatar.png')
-
-    def is_teacher(self):
-        return self.role == self.Role.TEACHER
 
     def __str__(self):
         return self.user.username
