@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load subject_extras %}
+
+{% block title %}Edit Marks{% endblock %}
+
+{% block content %}
+<h2 class="mb-3">{{ subject }}</h2>
+{% crispy formset helper %}
+{% endblock %}

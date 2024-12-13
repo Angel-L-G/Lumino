@@ -3,7 +3,12 @@ from django.shortcuts import redirect, render
 
 from shared.decorators import student_required, subject_owner_required, teacher_required
 
-from .forms import AddLessonForm, EditLessonForm, EnrollSubjectsForm, UnenrollSubjectsForm
+from .forms import (
+    AddLessonForm,
+    EditLessonForm,
+    EnrollSubjectsForm,
+    UnenrollSubjectsForm,
+)
 
 
 @login_required
@@ -118,5 +123,20 @@ def mark_list(request, code):
     enrollments = subject.enrollments.all()
     student_dict = {enrollment.student: enrollment.mark for enrollment in enrollments}
     return render(
-        request, 'subjects/mark_list.html', {'subject': subject, 'student_dict': student_dict}
+        request, 'marks/mark_list.html', {'subject': subject, 'student_dict': student_dict}
     )
+
+
+# @login_required
+# @subject_owner_required
+def edit_marks(request, code):
+    pass
+    # subject = request.user.teaching_subjects.get(code=code)
+    # form = EditMarkForm(subject.enrollments.all(), request.POST or None)
+    # helper = EditMarkFormSetHelper()
+    # if request.method == 'POST':
+    #     return redirect('subjects:mark-list', code=code)
+
+    # return render(
+    #     request, 'marks/edit_marks.html', {'subject': subject, 'formset': form, 'helper': helper}
+    # )

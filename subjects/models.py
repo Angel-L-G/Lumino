@@ -40,7 +40,10 @@ class Enrollment(models.Model):
         'subjects.Subject', related_name='enrollments', on_delete=models.DO_NOTHING
     )
     enrolled_at = models.DateField(auto_now_add=True)
-    mark = models.PositiveSmallIntegerField(null=True)
+    mark = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,  # validators=[MinValueValidator(1), MaxValueValidator(10)]
+    )
 
     def __str__(self):
         return f'{self.student} enrolled in {self.subject}'

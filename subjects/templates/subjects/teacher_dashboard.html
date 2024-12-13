@@ -11,7 +11,7 @@
 
 	<div class="col-3">
 		<p>Lessons available: {{ subject.lessons.count }}</p>
-		<a href="#">Marks</a>
+		<a href="{% url "subjects:mark-list" subject.code %}">Marks</a>
 		<ol>
 			{% for student in subject.students.all %}
 				<li>

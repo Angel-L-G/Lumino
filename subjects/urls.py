@@ -10,6 +10,7 @@ urlpatterns = [
     path('unenroll/', views.unenroll_subjects, name='unenroll-subjects'),
     path('<str:code>/', views.subject_detail, name='subject-detail'),
     path('<str:code>/marks/', views.mark_list, name='mark-list'),
+    path('<str:code>/marks/edit/', views.edit_marks, name='edit-marks'),
     path('<str:code>/lessons/add/', views.add_lesson, name='add-lesson'),
     path('<str:code>/lessons/<int:pk>/', views.lesson_detail, name='lesson-detail'),
     path('<str:code>/lessons/<int:pk>/edit/', views.edit_lesson, name='edit-lesson'),
