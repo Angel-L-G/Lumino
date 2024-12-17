@@ -1,14 +1,19 @@
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from shared.decorators import student_required, subject_owner_required, teacher_required
 
 from .forms import (
     AddLessonForm,
     EditLessonForm,
+    EditMarkForm,
+    EditMarkFormSetHelper,
     EnrollSubjectsForm,
     UnenrollSubjectsForm,
 )
+from .models import Enrollment, Subject
 
 
 @login_required
@@ -127,16 +132,29 @@ def mark_list(request, code):
     )
 
 
-# @login_required
-# @subject_owner_required
-def edit_marks(request, code):
-    pass
-    # subject = request.user.teaching_subjects.get(code=code)
-    # form = EditMarkForm(subject.enrollments.all(), request.POST or None)
-    # helper = EditMarkFormSetHelper()
-    # if request.method == 'POST':
-    #     return redirect('subjects:mark-list', code=code)
+@login_required
+@subject_owner_required
+def edit_marks(request, code: str):
+    subject = Subject.objects.get(code=code)
 
-    # return render(
-    #     request, 'marks/edit_marks.html', {'subject': subject, 'formset': form, 'helper': helper}
-    # )
+    # breadcrumbs = Breadcrumbs()
+    # breadcrumbs.add('My subjects', reverse('subjects:subject-list'))
+    # breadcrumbs.add(subject.code, reverse('subjects:subject-detail', args=[subject.code]))
+    # breadcrumbs.add('Marks', reverse('subjects:mark-list', args=[subject.code]))
+    # breadcrumbs.add('Edit marks')
+
+    MarkFormSet = modelformset_factory(Enrollment, EditMarkForm, extra=0)
+    queryset = subject.enrollments.all()
+    if request.method == 'POST':
+        if (formset := MarkFormSet(queryset=queryset, data=request.POST)).is_valid():
+            formset.save()
+            # messages.add_message(request, messages.SUCCESS, 'Marks were successfully saved.')
+            return redirect(reverse('subjects:edit-marks', kwargs={'code': code}))
+    else:
+        formset = MarkFormSet(queryset=queryset)
+    helper = EditMarkFormSetHelper()
+    return render(
+        request,
+        'marks/edit_marks.html',
+        dict(subject=subject, formset=formset, helper=helper),  # breadcrumbs=breadcrumbs),
+    )

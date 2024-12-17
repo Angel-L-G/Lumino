@@ -1,5 +1,5 @@
 {% load thumbnail %}
 
 {% thumbnail user.profile.avatar size crop="center" as img %}
-	<img src="{{ img.url }}" alt="{{ user|fullname }}" class="rounded-circle">
+	<img src="{{ img.url }}" alt="{{ user }}" class="rounded-circle">
 {% endthumbnail %}

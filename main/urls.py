@@ -30,7 +30,7 @@ urlpatterns = [
     path('login/', accounts.views.user_login, name='login'),
     path('logout/', accounts.views.user_logout, name='logout'),
     path('signup/', accounts.views.user_signup, name='signup'),
-    path('users/<str:username>/', users.views.user_detail, name='user_detail'),
+    path('users/<str:username>/', users.views.user_detail, name='user-detail'),
     path('user/', include('users.urls')),
     path('subjects/', include('subjects.urls')),
     path('__reload__/', include('django_browser_reload.urls')),

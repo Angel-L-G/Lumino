@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'subjects.apps.SubjectsConfig',
     'markdownify.apps.MarkdownifyConfig',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
