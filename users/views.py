@@ -1,6 +1,8 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+
+from shared.decorators import student_required
 
 from .forms import EditProfileForm
 
@@ -22,3 +24,11 @@ def user_edit(request):
         form.save()
         return redirect(profile.get_absolute_url())
     return render(request, 'users/user_edit.html', {'form': form})
+
+
+@login_required
+@student_required
+def leave(request):
+    get_user_model().objects.get(username=request.user.username).delete()
+    logout(request)
+    return redirect('home')

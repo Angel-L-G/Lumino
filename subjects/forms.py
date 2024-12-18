@@ -2,6 +2,7 @@ from crispy_bootstrap5.bootstrap5 import FloatingField
 from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import HTML, Div, Field, Row, Submit
 from django import forms
+from django.core.exceptions import ValidationError
 
 from .models import Enrollment, Lesson, Subject
 
@@ -135,6 +136,12 @@ class EditMarkForm(forms.ModelForm):
     class Meta:
         model = Enrollment
         fields = ['mark']
+
+    def clean_mark(self):
+        mark = self.cleaned_data['mark']
+        if mark >= 10 or mark <= 0:
+            raise ValidationError('The mark must be between 0 and 10')
+        return mark
 
 
 class EditMarkFormSetHelper(FormHelper):

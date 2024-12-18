@@ -1,9 +1,15 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from shared.decorators import student_required, subject_owner_required, teacher_required
+from shared.decorators import (
+    all_marks_required,
+    student_required,
+    subject_owner_required,
+    teacher_required,
+)
 
 from .forms import (
     AddLessonForm,
@@ -14,6 +20,7 @@ from .forms import (
     UnenrollSubjectsForm,
 )
 from .models import Enrollment, Subject
+from .tasks import deliver_certificate
 
 
 @login_required
@@ -80,6 +87,7 @@ def add_lesson(request, code):
         form = AddLessonForm(subject, request.POST)
         if form.is_valid():
             form.save()
+            messages.add_message(request, messages.SUCCESS, 'Lesson was successfully added.')
             return redirect('subjects:subject-detail', code=code)
     else:
         form = AddLessonForm(subject)
@@ -148,7 +156,7 @@ def edit_marks(request, code: str):
     if request.method == 'POST':
         if (formset := MarkFormSet(queryset=queryset, data=request.POST)).is_valid():
             formset.save()
-            # messages.add_message(request, messages.SUCCESS, 'Marks were successfully saved.')
+            messages.add_message(request, messages.SUCCESS, 'Marks were successfully saved.')
             return redirect(reverse('subjects:edit-marks', kwargs={'code': code}))
     else:
         formset = MarkFormSet(queryset=queryset)
@@ -158,3 +166,10 @@ def edit_marks(request, code: str):
         'marks/edit_marks.html',
         dict(subject=subject, formset=formset, helper=helper),  # breadcrumbs=breadcrumbs),
     )
+
+
+@login_required
+@all_marks_required
+def certificate(request):
+    deliver_certificate.delay(request.build_absolute_uri(''), request.user)
+    return render(request, 'certificates/certificate_feedback.html')

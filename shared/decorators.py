@@ -29,3 +29,12 @@ def subject_owner_required(func):
         return func(request, code, *args, **kwargs)
 
     return wrapper
+
+
+def all_marks_required(func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.enrollments.filter(mark=None).count() > 0 or request.user.is_teacher():
+            return HttpResponseForbidden('You do not have all the marks assigned.')
+        return func(request, *args, **kwargs)
+
+    return wrapper

@@ -7,8 +7,7 @@
 		<div class="col">
 			<div class="d-flex flex-row justify-content-between align-items-center">
 				<span class="display-3">{{ subject }}</span> 
-				<div>
-				</div>
+				<a href="{% url "subjects:edit-marks" subject.code %}" class="btn btn-warning">Edit Mark</a>
 			</div>
 			<table class="table table-striped">
 				<thead>

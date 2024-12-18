@@ -9,7 +9,8 @@
 	<title>{% block title %}{% endblock title %}</title>
 </head>
 <body data-bs-theme="dark">
-	{% include "navbar.html" %}
+	{% include "includes/navbar.html" %}
+	{% include "includes/messages.html" %}
 
 	<div class="container">
 		{% block content %}{% endblock content %}

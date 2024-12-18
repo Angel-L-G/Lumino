@@ -1,10 +1,25 @@
-{% extends "base.html" %}
-{% block title %}{{ other_user.username }}{% endblock %}
+{% extends "base.html" %} 
+{% block title %}{{ other_user.username }}{% endblock title%} 
 {% block content %}
-		<img src="{{ other_user.profile.avatar.url }}" alt="avatar">
-		<h1>{{ other_user.username }}</h1> <strong> {{ other_user.profile.get_role_display }} </strong>
-		<p>{{ other_user.profile.bio }}</p>
-		<p>{{ other_user.email }}</p>
-		<p>{{ other_user.first_name }}</p>
-		<p>{{ other_user.last_name }}</p>
+<div class="row mt-5">
+	<div class="col">
+		<div class="card d-flex flex-row">
+			<div class="img m-4">
+				{% include "users/include/avatar.html" with user=other_user size="250x250" %}
+			</div>
+			<div class="card-body m-4 d-flex flex-column justify-content-center">
+				<h5 class="card-title">{{ other_user.username }}<span class="badge text-bg-success ms-3">{{ other_user.profile.get_role_display }}</span></h5>
+				<p class="card-text">{{ other_user.profile.bio }}</p>
+				<p class="card-text">{{ other_user.email }}</p>
+				<p class="card-text">{{ other_user.first_name }} {{ other_user.last_name }}</p>
+				{% if other_user == user %}
+				<div>
+					<a href="{% url "users:user-edit" %}" class="btn btn-warning me-3">Edit</a>
+					<a href="{% url "users:leave" %}" class="btn btn-danger">Leave</a>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from prettyconf import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'subjects.apps.SubjectsConfig',
     'markdownify.apps.MarkdownifyConfig',
     'sorl.thumbnail',
+    'django_rq',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +162,19 @@ MARKDOWNIFY = {
         ]
     },
 }
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    }
+}
+
+CERTIFICATE_DIR = MEDIA_ROOT / 'certificates'
+
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_DEFAULT_FROM = config('EMAIL_DEFAULT_FROM', default='info@lumino.com')
+EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_PORT = 587

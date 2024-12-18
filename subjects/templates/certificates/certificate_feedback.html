@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Certificate{% endblock title %}
+{% block content %}
+	<div class="row mt-5">
+		<div class="alert alert-success" role="alert">
+			You will get the grade certificate quite soon at {{ user.email}}
+		</div>		
+	</div>
+{% endblock content %}

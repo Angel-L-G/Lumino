@@ -6,7 +6,7 @@ class Subject(models.Model):
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=3, unique=True)
     teacher = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='teaching_subjects', on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, related_name='teaching_subjects', on_delete=models.PROTECT
     )
     students = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -20,7 +20,7 @@ class Subject(models.Model):
         return self.enrollments.get(student=user).mark or None
 
     def __str__(self):
-        return self.code
+        return f'{self.code} - {self.name}'
 
 
 class Lesson(models.Model):
