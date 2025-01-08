@@ -32,10 +32,15 @@ def subject_list(request):
             {'subjects': request.user.teaching_subjects.all()},
         )
 
+    cases = 0
+    if request.user.enrolled_subjects.count() <= 0:
+        cases = 1
+    elif request.user.enrolled_subjects.count() == Subject.objects.count():
+        cases = 2
     return render(
         request,
         'subjects/subject_list.html',
-        {'subjects': request.user.enrolled_subjects.all()},
+        {'subjects': request.user.enrolled_subjects.all(), 'cases': cases},
     )
 
 
@@ -97,7 +102,11 @@ def add_lesson(request, code):
 
 @login_required
 def lesson_detail(request, code, pk):
-    subject = request.user.teaching_subjects.get(code=code)
+    subject = None
+    if request.user.is_teacher():
+        subject = request.user.teaching_subjects.get(code=code)
+    else:
+        subject = request.user.enrolled_subjects.get(code=code)
     lesson = subject.lessons.get(pk=pk)
     return render(
         request, 'subjects/lessons/lesson_detail.html', {'lesson': lesson, 'subject': subject}

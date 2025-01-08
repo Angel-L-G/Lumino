@@ -28,6 +28,9 @@ class EnrollSubjectsForm(forms.Form):
             Field('subjects'),
             Div(
                 Submit('save', 'Enroll', css_class='btn btn-primary w-75 mt-2 mb-2'),
+                HTML(
+                    '<a href="{% url \'subjects:subject-list\' %}" class="btn btn-danger w-75 mt-2 mb-2">Cancel</a>'
+                ),
                 css_class='d-flex justify-content-center',
             ),
         )
@@ -58,6 +61,9 @@ class UnenrollSubjectsForm(forms.Form):
             Field('subjects'),
             Div(
                 Submit('save', 'Unenroll', css_class='btn btn-primary w-75 mt-2 mb-2'),
+                HTML(
+                    '<a href="{% url \'subjects:subject-list\' %}" class="btn btn-danger w-75 mt-2 mb-2">Cancel</a>'
+                ),
                 css_class='d-flex justify-content-center',
             ),
         )
@@ -89,6 +95,9 @@ class AddLessonForm(forms.ModelForm):
             Field('content'),
             Div(
                 Submit('add', 'Add', css_class='btn btn-primary w-75 mt-2 mb-2'),
+                HTML(
+                    '<a href="{{form.subject.get_absolute_url}}" class="btn btn-danger w-75 mt-2 mb-2">Cancel</a>'
+                ),
                 css_class='d-flex justify-content-center',
             ),
         )
@@ -120,7 +129,7 @@ class EditLessonForm(forms.ModelForm):
             Div(
                 Submit('edit', 'Edit', css_class='btn btn-primary w-75 mt-2 mb-2'),
                 HTML(
-                    '<a href="{{lesson.get_absolute_url}}" class="btn btn-danger w-75 mt-2 mb-2">Cancel</a>'
+                    '<a href="{{form.instance.get_absolute_url}}" class="btn btn-danger w-75 mt-2 mb-2">Cancel</a>'
                 ),
                 css_class='d-flex justify-content-center',
             ),
@@ -139,7 +148,9 @@ class EditMarkForm(forms.ModelForm):
 
     def clean_mark(self):
         mark = self.cleaned_data['mark']
-        if mark >= 10 or mark <= 0:
+        if not mark:
+            return None
+        elif mark >= 11 or mark <= 0:
             raise ValidationError('The mark must be between 0 and 10')
         return mark
 

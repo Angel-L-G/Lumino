@@ -1,5 +1,7 @@
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.urls import reverse
 
 
 class Subject(models.Model):
@@ -22,6 +24,9 @@ class Subject(models.Model):
     def __str__(self):
         return f'{self.code} - {self.name}'
 
+    def get_absolute_url(self):
+        return reverse('subjects:subject-detail', kwargs={'code': self.code})
+
 
 class Lesson(models.Model):
     title = models.CharField(max_length=100)
@@ -30,6 +35,9 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('subjects:lesson-detail', kwargs={'code': self.subject.code, 'pk': self.pk})
 
 
 class Enrollment(models.Model):
@@ -42,7 +50,8 @@ class Enrollment(models.Model):
     enrolled_at = models.DateField(auto_now_add=True)
     mark = models.PositiveSmallIntegerField(
         null=True,
-        blank=True,  # validators=[MinValueValidator(1), MaxValueValidator(10)]
+        blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(10)],
     )
 
     def __str__(self):
