@@ -15,7 +15,9 @@
 				{% if other_user == user %}
 				<div>
 					<a href="{% url "users:user-edit" %}" class="btn btn-warning me-3">Edit</a>
-					<a href="{% url "users:leave" %}" class="btn btn-danger">Leave</a>
+					{% if not other_user.is_teacher %}
+						<a href="{% url "users:leave" %}" class="btn btn-danger">Leave</a>
+					{% endif %}
 				</div>
 				{% endif %}
 			</div>

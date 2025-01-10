@@ -21,10 +21,18 @@ class EditProfileForm(forms.ModelForm):
         self.helper.attrs = dict(novalidate=True, enctype='multipart/form-data')
         self.helper.layout = Layout(
             FloatingField('bio'),
-            Field('avatar'),
+            Div(
+                HTML(
+                    '<img src="{{ user.profile.avatar.url }}" alt="{{ user }}" class="rounded-circle">'
+                ),
+                Field('avatar'),
+                css_class='d-flex align-items-center gap-3',
+            ),
             Div(
                 Submit('save', 'Save', css_class='btn btn-primary w-75 mt-2 mb-2'),
-                HTML('<a href="{{ user.profile.get_absolute_url }}">Cancel</a>'),
+                HTML(
+                    '<a class="btn btn-danger w-75 mt-2 mb-2" href="{{ user.profile.get_absolute_url }}">Cancel</a>'
+                ),
                 css_class='d-flex flex-column align-items-center',
             ),
         )

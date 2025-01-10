@@ -9,6 +9,7 @@ from shared.decorators import (
     student_required,
     subject_owner_required,
     teacher_required,
+    user_has_subject,
 )
 
 from .forms import (
@@ -29,7 +30,6 @@ def subject_list(request):
         return render(
             request,
             'subjects/subject_list.html',
-            {'subjects': request.user.teaching_subjects.all()},
         )
 
     cases = 0
@@ -40,7 +40,7 @@ def subject_list(request):
     return render(
         request,
         'subjects/subject_list.html',
-        {'subjects': request.user.enrolled_subjects.all(), 'cases': cases},
+        {'cases': cases},
     )
 
 
@@ -50,6 +50,9 @@ def enroll_subjects(request):
     form = EnrollSubjectsForm(request.user, request.POST or None)
     if form.is_valid():
         form.save()
+        messages.add_message(
+            request, messages.SUCCESS, 'Successfully enrolled in the chosen subjects.'
+        )
         return redirect('subjects:subject-list')
 
     return render(
@@ -63,6 +66,9 @@ def unenroll_subjects(request):
     form = UnenrollSubjectsForm(request.user, request.POST or None)
     if form.is_valid():
         form.save()
+        messages.add_message(
+            request, messages.SUCCESS, 'Successfully unenrolled from the chosen subjects.'
+        )
         return redirect('subjects:subject-list')
 
     return render(
@@ -71,6 +77,7 @@ def unenroll_subjects(request):
 
 
 @login_required
+@user_has_subject
 def subject_detail(request, code):
     if request.user.is_teacher():
         subject = request.user.teaching_subjects.get(code=code)
@@ -101,6 +108,7 @@ def add_lesson(request, code):
 
 
 @login_required
+@user_has_subject
 def lesson_detail(request, code, pk):
     subject = None
     if request.user.is_teacher():
@@ -122,6 +130,7 @@ def edit_lesson(request, code, pk):
         form = EditLessonForm(subject, request.POST, instance=lesson)
         if form.is_valid():
             form.save()
+            messages.add_message(request, messages.SUCCESS, 'Changes were successfully saved.')
             return redirect('subjects:lesson-detail', code=code, pk=pk)
     else:
         form = EditLessonForm(subject, instance=lesson)
@@ -135,6 +144,7 @@ def delete_lesson(request, code, pk):
     subject = request.user.teaching_subjects.get(code=code)
     lesson = subject.lessons.get(pk=pk)
     lesson.delete()
+    messages.add_message(request, messages.SUCCESS, 'Lesson was successfully deleted.')
     return redirect('subjects:subject-detail', code=code)
 
 
@@ -181,4 +191,9 @@ def edit_marks(request, code: str):
 @all_marks_required
 def certificate(request):
     deliver_certificate.delay(request.build_absolute_uri(''), request.user)
+    messages.add_message(
+        request,
+        messages.SUCCESS,
+        f'You will get the grade certificate quite soon at ${request.user.email}.',
+    )
     return render(request, 'certificates/certificate_feedback.html')

@@ -59,6 +59,7 @@
     </style>
   </head>
   <body>
+    {% include "includes/messages.html" %}
     <div class="console">
       <div class="output"></div>
     </div>
@@ -72,7 +73,7 @@
 
       // Función para aplicar el glitch en el texto
       function glitchEffect(text) {
-        const glitchChance = 0.1;
+        const glitchChance = 0.05;
         return text
           .split("")
           .map(char => (char === "\n" ? char : Math.random() < glitchChance ? randomChar() : char))

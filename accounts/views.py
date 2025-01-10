@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -52,6 +53,7 @@ def user_signup(request):
         if (form := SignupForm(request.POST)).is_valid():
             user = form.save()
             login(request, user)
+            messages.add_message(request, messages.SUCCESS, 'Welcome to Lumino. Nice to see you!.')
             return redirect('home')
     else:
         form = SignupForm()

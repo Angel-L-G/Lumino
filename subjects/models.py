@@ -42,10 +42,10 @@ class Lesson(models.Model):
 
 class Enrollment(models.Model):
     student = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='enrollments', on_delete=models.DO_NOTHING
+        settings.AUTH_USER_MODEL, related_name='enrollments', on_delete=models.CASCADE
     )
     subject = models.ForeignKey(
-        'subjects.Subject', related_name='enrollments', on_delete=models.DO_NOTHING
+        'subjects.Subject', related_name='enrollments', on_delete=models.CASCADE
     )
     enrolled_at = models.DateField(auto_now_add=True)
     mark = models.PositiveSmallIntegerField(

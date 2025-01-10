@@ -38,3 +38,15 @@ def all_marks_required(func):
         return func(request, *args, **kwargs)
 
     return wrapper
+
+
+def user_has_subject(func):
+    def wrapper(request, code, *args, **kwargs):
+        if not request.user.is_teacher() and not request.user.enrolled_subjects.get(code=code):
+            return HttpResponseForbidden('You are not enrolled in that subject.')
+        subject = Subject.objects.get(code=code)
+        if request.user.is_teacher() and subject.teacher != request.user:
+            return HttpResponseForbidden('Only the subject owner can perform this action.')
+        return func(request, code, *args, **kwargs)
+
+    return wrapper

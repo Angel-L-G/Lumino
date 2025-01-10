@@ -16,6 +16,6 @@ class Command(BaseCommand):
                 count += 1
             if count > 0:
                 average = total / count
-                self.stdout.write(f'{subject.code}: {average}')
+                self.stdout.write(f'{subject.code}: {average:.2f}')
             else:
                 self.stdout.write(f'{subject.code}: No marks')

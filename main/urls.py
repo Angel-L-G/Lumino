@@ -33,5 +33,6 @@ urlpatterns = [
     path('users/<str:username>/', users.views.user_detail, name='user-detail'),
     path('user/', include('users.urls')),
     path('subjects/', include('subjects.urls')),
+    path('setlang/<str:lang>/', shared.views.setlang, name='setlang'),
     path('__reload__/', include('django_browser_reload.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

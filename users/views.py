@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -16,12 +17,13 @@ def user_detail(request, username):
 
 
 @login_required
-def user_edit(request):
+def edit_profile(request):
     user = get_user_model().objects.get(username=request.user.username)
     profile = user.profile
     form = EditProfileForm(request.POST or None, request.FILES or None, instance=profile)
     if form.is_valid():
         form.save()
+        messages.add_message(request, messages.SUCCESS, 'User profile has been successfully saved.')
         return redirect(profile.get_absolute_url())
     return render(request, 'users/user_edit.html', {'form': form})
 
@@ -31,4 +33,5 @@ def user_edit(request):
 def leave(request):
     get_user_model().objects.get(username=request.user.username).delete()
     logout(request)
+    messages.add_message(request, messages.SUCCESS, 'Good bye! Hope to see you soon.')
     return redirect('home')
