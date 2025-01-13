@@ -7,8 +7,8 @@ register = template.Library()
 @register.inclusion_tag('includes/setlang.html', takes_context=True)
 def setlang(context):
     LANGUAGES = {
-        'en': '🇺🇸',
         'es': '🇪🇸',
+        'en': '🇺🇸',
     }
 
     current_lang = get_language()

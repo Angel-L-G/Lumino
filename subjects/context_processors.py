@@ -8,6 +8,6 @@ def subjects(request) -> dict:
         if request.user.is_teacher():
             return {'subjects': request.user.teaching_subjects.all()}
 
-        return {'subjects': request.user.enrolled_subjects.all()}
+        return {'subjects': request.user.enrolled.all()}
     except Subject.DoesNotExist:
         return {}

@@ -8,7 +8,6 @@ from shared.decorators import (
     all_marks_required,
     student_required,
     subject_owner_required,
-    teacher_required,
     user_has_subject,
 )
 
@@ -33,14 +32,18 @@ def subject_list(request):
         )
 
     cases = 0
-    if request.user.enrolled_subjects.count() <= 0:
+    if request.user.enrolled.count() <= 0:
         cases = 1
-    elif request.user.enrolled_subjects.count() == Subject.objects.count():
+    elif request.user.enrolled.count() == Subject.objects.count():
         cases = 2
+
     return render(
         request,
         'subjects/subject_list.html',
-        {'cases': cases},
+        {
+            'cases': cases,
+            'all_marks_assigned': request.user.enrolled.filter(enrollments__mark=None).count() <= 0,
+        },
     )
 
 
@@ -82,7 +85,7 @@ def subject_detail(request, code):
     if request.user.is_teacher():
         subject = request.user.teaching_subjects.get(code=code)
     else:
-        subject = request.user.enrolled_subjects.get(code=code)
+        subject = request.user.enrolled.get(code=code)
 
     return render(
         request,
@@ -92,7 +95,7 @@ def subject_detail(request, code):
 
 
 @login_required
-@teacher_required
+@subject_owner_required
 def add_lesson(request, code):
     subject = request.user.teaching_subjects.get(code=code)
     if request.method == 'POST':
@@ -114,7 +117,7 @@ def lesson_detail(request, code, pk):
     if request.user.is_teacher():
         subject = request.user.teaching_subjects.get(code=code)
     else:
-        subject = request.user.enrolled_subjects.get(code=code)
+        subject = request.user.enrolled.get(code=code)
     lesson = subject.lessons.get(pk=pk)
     return render(
         request, 'subjects/lessons/lesson_detail.html', {'lesson': lesson, 'subject': subject}
@@ -122,7 +125,7 @@ def lesson_detail(request, code, pk):
 
 
 @login_required
-@teacher_required
+@subject_owner_required
 def edit_lesson(request, code, pk):
     subject = request.user.teaching_subjects.get(code=code)
     lesson = subject.lessons.get(pk=pk)
@@ -131,7 +134,7 @@ def edit_lesson(request, code, pk):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Changes were successfully saved.')
-            return redirect('subjects:lesson-detail', code=code, pk=pk)
+            return render(request, 'subjects/lessons/edit_lesson.html', {'form': form})
     else:
         form = EditLessonForm(subject, instance=lesson)
 
@@ -139,7 +142,7 @@ def edit_lesson(request, code, pk):
 
 
 @login_required
-@teacher_required
+@subject_owner_required
 def delete_lesson(request, code, pk):
     subject = request.user.teaching_subjects.get(code=code)
     lesson = subject.lessons.get(pk=pk)

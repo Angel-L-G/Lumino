@@ -17,7 +17,7 @@ class EnrollSubjectsForm(forms.Form):
         self.user = user
 
         self.fields['subjects'].queryset = self.fields['subjects'].queryset.exclude(
-            pk__in=user.enrolled_subjects.all()
+            pk__in=user.enrolled.all()
         )
 
         self.helper = FormHelper()
@@ -38,7 +38,7 @@ class EnrollSubjectsForm(forms.Form):
     def save(self, *args, **kwargs):
         subjects = self.cleaned_data['subjects']
         for subject in subjects:
-            self.user.enrolled_subjects.add(subject)
+            self.user.enrolled.add(subject)
         return subjects
 
 
@@ -51,7 +51,7 @@ class UnenrollSubjectsForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.user = user
 
-        self.fields['subjects'].queryset = user.enrolled_subjects.all()
+        self.fields['subjects'].queryset = user.enrolled.all()
 
         self.helper = FormHelper()
         self.helper.attrs = dict(novalidate=True)
@@ -71,7 +71,7 @@ class UnenrollSubjectsForm(forms.Form):
     def save(self, *args, **kwargs):
         subjects = self.cleaned_data['subjects']
         for subject in subjects:
-            self.user.enrolled_subjects.remove(subject)
+            self.user.enrolled.remove(subject)
         return subjects
 
 

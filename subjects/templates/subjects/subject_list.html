@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Subjects{% endblock title %}
 {% load i18n %}
+{% block title %}Subjects{% endblock title %}
 {% block content %}
 	<div class="row mt-5">
 		<div class="col-4">
-			<h1>{% translate "My subjects" %}</h1>
+			<h1>{% translate 'My subjects' %}</h1>
 			<ul class="list-group my-2">
 					{% for subject in subjects %}
 						<li class="list-group-item d-flex justify-content-between align-items-center">
@@ -31,6 +31,10 @@
 			{% else %}
 				<button class="btn btn-outline-success me-3 disabled" href="{% url "subjects:enroll-subjects" %}">enroll</button>
 				<a class="btn btn-outline-danger" href="{% url "subjects:unenroll-subjects" %}">unenroll</a>
+			{% endif %}
+
+			{% if all_marks_assigned %}
+				<a href="{% url "subjects:certificate" %}">Request marks certificate</a>
 			{% endif %}
 		</div>
 	</div>

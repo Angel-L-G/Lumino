@@ -19,7 +19,7 @@
 				<tbody>
 					{% for student, mark in student_dict.items %}
 					<tr>
-						<td>{{ student }}</td>
+						<td><a href="{{ student.profile.get_absolute_url }}">{{ student }}</a></td>
 						<td>{{ mark|default_if_none:"-" }}</td>
 					</tr>
 					{% endfor %}

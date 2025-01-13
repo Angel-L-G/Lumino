@@ -12,7 +12,7 @@ class Subject(models.Model):
     )
     students = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name='enrolled_subjects',
+        related_name='enrolled',
         through='Enrollment',
     )
 
