@@ -3,7 +3,7 @@
 {% block title %}Subjects{% endblock title %}
 {% block content %}
 	<div class="row mt-5">
-		<div class="col-4">
+		<div class="col">
 			<h1>{% translate 'My subjects' %}</h1>
 			<ul class="list-group my-2">
 					{% for subject in subjects %}
@@ -21,20 +21,20 @@
 	</div>
 	{% if not user.is_teacher %}
 	<div class="row mt-2">
-		<div class="col d-flex">
+		<div class="col d-flex gap-3">
 			{% if cases == 0 %}
-				<a class="btn btn-outline-success me-3" href="{% url "subjects:enroll-subjects" %}">enroll</a>
+				<a class="btn btn-outline-success" href="{% url "subjects:enroll-subjects" %}">enroll</a>
 				<a class="btn btn-outline-danger" href="{% url "subjects:unenroll-subjects" %}">unenroll</a>
 			{% elif cases == 1 %}
-				<a class="btn btn-outline-success me-3" href="{% url "subjects:enroll-subjects" %}">enroll</a>
+				<a class="btn btn-outline-success" href="{% url "subjects:enroll-subjects" %}">enroll</a>
 				<button class="btn btn-outline-danger disabled" href="{% url "subjects:unenroll-subjects" %}">unenroll</button>
 			{% else %}
-				<button class="btn btn-outline-success me-3 disabled" href="{% url "subjects:enroll-subjects" %}">enroll</button>
+				<button class="btn btn-outline-success disabled" href="{% url "subjects:enroll-subjects" %}">enroll</button>
 				<a class="btn btn-outline-danger" href="{% url "subjects:unenroll-subjects" %}">unenroll</a>
 			{% endif %}
 
 			{% if all_marks_assigned %}
-				<a href="{% url "subjects:certificate" %}">Request marks certificate</a>
+				<a class="btn btn-outline-warning" href="{% url "subjects:certificate" %}">Request certificate</a>
 			{% endif %}
 		</div>
 	</div>

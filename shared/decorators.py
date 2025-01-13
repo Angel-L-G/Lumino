@@ -24,6 +24,8 @@ def teacher_required(func):
 def subject_owner_required(func):
     def wrapper(request, code, *args, **kwargs):
         subject = Subject.objects.get(code=code)
+        if not request.user.is_teacher():
+            return HttpResponseForbidden('Only teachers allowed.')
         if request.user.is_teacher() and subject.teacher != request.user:
             return HttpResponseForbidden('Only the subject owner can perform this action.')
         return func(request, code, *args, **kwargs)
