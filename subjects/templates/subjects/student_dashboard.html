@@ -11,6 +11,6 @@
 	<div class="col-3">
 		<h4>Teacher: {{ subject.teacher }}</h4>
 		<p>Lessons available: {{ subject.lessons.count }}</p>
-		<p>Mark: {{ mark|default_if_none:"You have no mark yet" }}</p>
+		<p>Your mark for this subject: {{ mark|default_if_none:"You have no mark yet" }}</p>
 	</div>
 </div>
