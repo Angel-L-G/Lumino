@@ -11,7 +11,7 @@ class EditProfileForm(forms.ModelForm):
         model = Profile
         fields = ['bio', 'avatar']
         widgets = {
-            'bio': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'bio': forms.Textarea(attrs={'rows': 3, 'cols': 4, 'class': 'form-control'}),
             'avatar': forms.FileInput(attrs={'accept': 'image/*', 'class': 'form-control-file'}),
         }
 
@@ -19,12 +19,11 @@ class EditProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.attrs = dict(novalidate=True, enctype='multipart/form-data')
+        self.helper.form_class = 'w-100 h-100'
         self.helper.layout = Layout(
-            FloatingField('bio'),
+            FloatingField('bio', css_class='mb-3 h-100'),
             Div(
-                HTML(
-                    '<img src="{{ user.profile.avatar.url }}" alt="{{ user }}" class="rounded-circle">'
-                ),
+                HTML('{% include "users/include/avatar.html" with user=user size="30x30" %}'),
                 Field('avatar'),
                 css_class='d-flex align-items-center gap-3',
             ),

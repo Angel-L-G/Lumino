@@ -7,15 +7,17 @@
 	<link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'bootstrap-icons/font/bootstrap-icons.min.css' %}">
 	<link rel="stylesheet" href="{% static 'main.css' %}">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<title>{% block title %}{% endblock title %}</title>
 </head>
 <body data-bs-theme="dark">
 	{% include "includes/navbar.html" %}
 	{% include "includes/messages.html" %}
 
-	<div class="container">
+	<div class="container height-100">
 		{% block content %}{% endblock content %}
 	</div>
 	<script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'message_transition.js' %}"></script>
 </body>
 </html>

@@ -1,12 +1,12 @@
-<li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<div class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     {{ current_flag }}
-  </a>
-  <ul class="dropdown-menu dropdown-menu-end dropdown-lang">
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end bg-info-subtle" style="width: auto; min-width: unset;">
     {% for lang, flag in languages.items %}
       <li>
-        <a class="dropdown-item nav-link" href="{% url 'setlang' lang %}?next={{ next }}">{{ flag }}</a>
+        <a class="dropdown-item" href="{% url 'setlang' lang %}?next={{ next }}">{{ flag }}</a>
       </li>
     {% endfor %}
   </ul>
-</li>
+</div>

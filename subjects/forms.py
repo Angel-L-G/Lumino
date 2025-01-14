@@ -27,7 +27,7 @@ class EnrollSubjectsForm(forms.Form):
         self.helper.layout = Layout(
             Field('subjects'),
             Div(
-                Submit('save', 'Enroll', css_class='btn btn-primary w-75 mt-2 mb-2'),
+                Submit('save', 'Enroll', css_class='btn btn-primary w-75 mt-2 mb-2 me-4'),
                 HTML(
                     '<a href="{% url \'subjects:subject-list\' %}" class="btn btn-danger w-75 mt-2 mb-2">Cancel</a>'
                 ),
@@ -60,7 +60,7 @@ class UnenrollSubjectsForm(forms.Form):
         self.helper.layout = Layout(
             Field('subjects'),
             Div(
-                Submit('save', 'Unenroll', css_class='btn btn-primary w-75 mt-2 mb-2'),
+                Submit('save', 'Unenroll', css_class='btn btn-primary w-75 mt-2 mb-2 me-4'),
                 HTML(
                     '<a href="{% url \'subjects:subject-list\' %}" class="btn btn-danger w-75 mt-2 mb-2">Cancel</a>'
                 ),

@@ -12,14 +12,13 @@ from .forms import EditProfileForm
 @login_required
 def user_detail(request, username):
     user = get_user_model().objects.get(username=username)
-    print(user.profile.role)
+    print(user.profile.avatar)
     return render(request, 'users/user_detail.html', {'other_user': user})
 
 
 @login_required
 def edit_profile(request):
-    user = get_user_model().objects.get(username=request.user.username)
-    profile = user.profile
+    profile = request.user.profile
     form = EditProfileForm(request.POST or None, request.FILES or None, instance=profile)
     if form.is_valid():
         form.save()
@@ -31,7 +30,15 @@ def edit_profile(request):
 @login_required
 @student_required
 def leave(request):
-    get_user_model().objects.get(username=request.user.username).delete()
+    request.user.delete()
     logout(request)
     messages.add_message(request, messages.SUCCESS, 'Good bye! Hope to see you soon.')
     return redirect('home')
+
+
+@login_required
+def reset_image(request):
+    request.user.profile.avatar = 'avatars/noavatar.png'
+    request.user.profile.save()
+    messages.add_message(request, messages.SUCCESS, 'Profile image has been reset.')
+    return redirect('user-detail', username=request.user.username)

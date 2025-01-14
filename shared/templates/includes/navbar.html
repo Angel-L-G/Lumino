@@ -5,7 +5,7 @@
       <i class="bi bi-book-half ml-1"></i>
       Lumino
     </a>
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center justify-content-center">
         {% setlang %}
         <div class="btn-group">
           <button type="button" class="text-light btn dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
@@ -13,6 +13,7 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end bg-info-subtle" data-bs-theme="dark">
             <li><a href="{% url "user-detail" user.username %}" class="dropdown-item">{{ user }}</a></li>
+            <li><hr></li>
             <li><a href="{% url "logout" %}" class="dropdown-item link-danger">Logout <i class="bi bi-box-arrow-right"></i></a></li>
           </ul>
         </div>

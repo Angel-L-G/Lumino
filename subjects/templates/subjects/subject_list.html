@@ -8,8 +8,8 @@
 			<ul class="list-group my-2">
 					{% for subject in subjects %}
 						<li class="list-group-item d-flex justify-content-between align-items-center">
-							<span><strong>{{ subject }}</strong> - {{ subject.name }}</span>
-							<a href="{% url "subjects:subject-detail" subject.code %}" class="btn btn-outline-secondary"><i class="bi bi-eye"></i></a>
+							<span><strong>{{ subject.code }}</strong> - {{ subject.name }}</span>
+							<a href="{% url "subjects:subject-detail" subject.code %}" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
 						</li>
 						{% empty %}
 							<div class="alert alert-warning" role="alert">

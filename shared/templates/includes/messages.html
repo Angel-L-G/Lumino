@@ -1,14 +1,14 @@
 <div class="row">
 	<div class="col">
 		{% if messages %}
-		<div class="alert alert-dismissible fade show" role="alert">
-			<ul>
-				{% for message in messages %}
-					<li class="alert alert-{{ message.tags }}">{{ message }}</li>
-				{% endfor %}
-			</ul>
-			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		</div>
+		<ul class="messages mx-5 mt-3" style="list-style-type: none; padding: 0; margin: 0">
+			{% for message in messages %}
+			<div class="alert alert-{{ message.tags }}" role="alert" style="position: relative; padding-right: 40px">
+				{{ message }}
+				<button type="button" class="btn-close" aria-label="Close" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"></button>
+			</div>
+			{% endfor %}
+		</ul>
 		{% endif %}
 	</div>
 </div>
