@@ -85,7 +85,7 @@ function addLinks() {
 	const ul = document.createElement('ul');
 
 	// Frase para el <p>
-	const phrase = "¿Listo para comenzar? Haz clic en los enlaces:";
+	const phrase = "¿Listo para comenzar? Haz click en los enlaces:";
 
 	// Crear los enlaces dentro de la lista
 	const links = [

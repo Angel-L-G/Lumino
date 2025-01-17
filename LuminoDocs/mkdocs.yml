@@ -1,1 +1,8 @@
-site_name: My Docs
+site_name: Lumino
+theme:
+  name: null
+  custom_dir: "cinder"
+
+nav:
+  - Home: index.md
+  - Subjects: subjects.md
