@@ -1,15 +1,18 @@
-# Welcome to Lumino
+# Bienvenido a Lumino
 
-##
+## Introducción
 
-- `mkdocs new [dir-name]` - Create a new project.
-- `mkdocs serve` - Start the live-reloading docs server.
-- `mkdocs build` - Build the documentation site.
-- `mkdocs -h` - Print help message and exit.
+### Propósito del documento
 
-## Project layout
+Este documento tiene como objetivo proporcionar una descripción detallada del sistema, incluyendo sus requisitos, diseño, implementación y mantenimiento. Servirá como guía para desarrolladores, testers y administradores del sistema.
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+### Visión general del proyecto
+
+La aplicación de Lumino está diseñada para gestionar la información académica y administrativa de un instituto educativo. Permite la gestión de estudiantes, profesores y calificaciones, optimizando la comunicación y organización interna.
+
+### Audiencia objetivo
+
+- **Desarrolladores**: Para mejorar, mantener y escalar el sistema.
+- **Testers**: Para garantizar la calidad del software.
+- **Administradores**: Para configurar y gestionar la aplicación.
+- **Usuarios finales**: Estudiantes y profesores que interactúan con la plataforma.
